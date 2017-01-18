@@ -12,12 +12,26 @@ h = d.hour
 
 def process():
     print blah
+
 def openfileR():
     print "file r"
+
 def openfileW():
     print "file w"
+
 def submit():
-    print "submit account number"
+    entrytxt = entry1.get()
+    print entrytxt
+    
+def retrieve():
+    doc = open("1027.txt", "r")
+    account_number = doc.readline()
+    print account_number
+    name = doc.readline()
+    name = name[0:-1]
+    print name
+    balance = doc.readline()
+    print balance
 
 root = Tk() #gives us a blank canvas object to work with
 root.title("Fab Things Banking")
@@ -25,9 +39,6 @@ root.title("Fab Things Banking")
 
 entry1 = Entry(root)
 entry1.grid(row=0, column=1)
-entry1.bind("<Return>", process)
-
-
 
 
 
@@ -43,7 +54,7 @@ label1 = Label(root, text="Account number:")
 label1.grid(row=0, column=0)
 
 
-button1 = Button(root, text="Submit", command=submit)
+button1 = Button(root, text="Submit", command=retrieve)
 button1.grid(row=0, column=3)
 
 
