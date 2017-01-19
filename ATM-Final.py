@@ -4,6 +4,7 @@ import tkMessageBox
 from PIL import Image, ImageTk
 from datetime import datetime
 from threading import *
+from math import *
 
 
 d= datetime.now()
@@ -19,20 +20,28 @@ def openfileR():
 def openfileW():
     print "file w"
 
-def submit():
-    entrytxt = entry1.get()
-    print entrytxt
-    
 def retrieve():
-    doc = open("1027.txt", "r")
+    entrytxt = entry1.get()
+    entrytxt = entrytxt + ".txt"
+    doc = open(entrytxt, "r")
     account_number = doc.readline()
-    print account_number
+    account_number = account_number[0:-1]
     name = doc.readline()
     name = name[0:-1]
-    print name
+    label3.config(text=name)
     balance = doc.readline()
-    print balance
+    balance = balance[0:-1]
+    label5.config(text="$"+balance)
+    #insert()
 
+#def insert():
+    #label3.insert(name)
+
+def submit():
+    entrytxt2 = entry2.get()
+    balance = entrytxt2 - balance
+    print balance
+  
 root = Tk() #gives us a blank canvas object to work with
 root.title("Fab Things Banking")
 
@@ -62,13 +71,13 @@ button1.grid(row=0, column=3)
 label2 = Label(root, text="Name:")
 label2.grid(row=1, column=0, sticky=W)
 
-label3 = Label(root, text="retrieve name")
+label3 = Label(root, text="")
 label3.grid(row=1, column=1, sticky=W)
 
 label4 = Label(root, text="Balance:")
 label4.grid(row=2, column=0, sticky=W)
 
-label5 = Label(root, text="Retrieve balance")
+label5 = Label(root, text= "")
 label5.grid(row=2, column=1, sticky=W)
 
 label6 = Label(root, text="Withdraw: $")
