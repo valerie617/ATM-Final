@@ -6,7 +6,6 @@ from datetime import datetime
 from threading import *
 from math import *
 
-
 d= datetime.now()
 y = d.year
 h = d.hour
@@ -31,16 +30,26 @@ def retrieve():
     label3.config(text=name)
     balance = doc.readline()
     balance = balance[0:-1]
-    label5.config(text="$"+balance)
+    global balance
+    label5.config(text=balance)
     #insert()
 
 #def insert():
     #label3.insert(name)
 
-def submit():
+def withdraw_submit():
     entrytxt2 = entry2.get()
-    balance = entrytxt2 - balance
-    print balance
+    if float(balance) >= float(entrytxt2):
+        new_balance = float(balance) - float(entrytxt2)
+    else:
+        tkMessageBox.showwarning("Error", "Insufficient Funds")        
+    print new_balance
+    
+def deposit_submit():
+    entrytxt3 = entry3.get()
+    new_balance = float(balance) + float(entrytxt3)
+    print new_balance
+    
   
 root = Tk() #gives us a blank canvas object to work with
 root.title("Fab Things Banking")
@@ -87,7 +96,7 @@ entry2 = Entry(root)
 entry2.grid(row=3, column=1, sticky=W)
 entry2.bind("<Return>", process)
 
-button2 = Button(root, text=">", command=submit)
+button2 = Button(root, text=">", command=withdraw_submit)
 button2.grid(row=3, column=2, sticky=W)
 
 label7 = Label(root, text="Deposit: $")
@@ -97,7 +106,7 @@ entry3 = Entry(root)
 entry3.grid(row=4, column=1, sticky=W)
 entry3.bind("<Return>", process)
 
-button3 = Button(root, text=">", command=submit)
+button3 = Button(root, text=">", command=deposit_submit)
 button3.grid(row=4, column=2, sticky=W)
 
 label8 = Label(root, text="Transfer to:")
@@ -120,7 +129,7 @@ entry5 = Entry(root)
 entry5.grid(row=7, column=1, sticky=W)
 entry5.bind("<Return>", process)
 
-button5 = Button(root, text=">", command=submit)
+button5 = Button(root, text=">", command=transfer_submit)
 button5.grid(row=7, column=2, sticky=W)
 
 menubar = Menu(root)
