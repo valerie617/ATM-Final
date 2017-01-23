@@ -25,14 +25,16 @@ def retrieve():
     doc = open(entrytxt, "r")
     account_number = doc.readline()
     account_number = account_number[0:-1]
+    global account_number
     name = doc.readline()
     name = name[0:-1]
+    global name
     label3.config(text=name)
     balance = doc.readline()
-    balance = balance[0:-1]
+    #balance = balance[0:-1]
     global balance
     label5.config(text=balance)
-    #insert()
+    doc.close()
 
 #def insert():
     #label3.insert(name)
@@ -41,14 +43,67 @@ def withdraw_submit():
     entrytxt2 = entry2.get()
     if float(balance) >= float(entrytxt2):
         new_balance = float(balance) - float(entrytxt2)
+        print new_balance
+        balance = new_balance
+        global balance
+        label5.config(text=balance)
+        entrytxt = entry1.get()
+        entrytxt = entrytxt + ".txt"
+        doc = open(entrytxt, "w")
+        doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
+        doc.close()
+        entry2.delete(0,END)
     else:
-        tkMessageBox.showwarning("Error", "Insufficient Funds")        
-    print new_balance
+        tkMessageBox.showwarning("Error", "Insufficient Funds") 
+        entry2.delete(0,END)       
+    
+    
     
 def deposit_submit():
     entrytxt3 = entry3.get()
     new_balance = float(balance) + float(entrytxt3)
     print new_balance
+    balance = new_balance
+    global balance
+    label5.config(text=balance)
+    entrytxt = entry1.get()
+    entrytxt = entrytxt + ".txt"
+    doc = open(entrytxt, "w")
+    doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
+    doc.close()
+    entry3.delete(0,END)
+    
+def transfer_submit():
+    entrytxt4 = entry4.get()
+    entrytxt4 = entrytxt4 + ".txt"
+    doc2 = open(entrytxt4, "r")
+    account_number2 = doc2.readline()
+    account_number2 = account_number2[0:-1]
+    name2 = doc2.readline()
+    name2 = name2[0:-1]
+    balance2 = doc2.readline()
+    doc2.close()
+     
+    entrytxt5 = entry5.get()
+    new_balance = float(balance) - float(entrytxt5)
+    new_balance2 = float(balance2) + float(entrytxt5)
+    balance = new_balance
+    global balance
+    label5.config(text=balance)
+    entrytxt = entry1.get()
+    entrytxt = entrytxt + ".txt"
+    doc = open(entrytxt, "w")
+    doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
+    doc.close()
+    entrytxt4 = entry4.get()
+    entrytxt4 = entrytxt4 + ".txt"
+    doc = open(entrytxt4, "w")
+    doc.write (account_number2 + "\n" + name2 + "\n" + str(new_balance2)) 
+    doc.close()
+    print account_number2
+    print name2
+    print new_balance2
+    
     
   
 root = Tk() #gives us a blank canvas object to work with
@@ -119,7 +174,7 @@ entry4 = Entry(root)
 entry4.grid(row=6, column=1, sticky=W)
 entry4.bind("<Return>", process)
 
-button4 = Button(root, text=">", command=submit)
+button4 = Button(root, text=">", command=withdraw_submit)
 button4.grid(row=6, column=2, sticky=W)
 
 label10 = Label(root, text="     Amount: $")
