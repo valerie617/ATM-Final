@@ -13,12 +13,6 @@ h = d.hour
 def process():
     print blah
 
-def openfileR():
-    print "file r"
-
-def openfileW():
-    print "file w"
-
 def retrieve():
     entrytxt = entry1.get()
     entrytxt = entrytxt + ".txt"
@@ -35,6 +29,7 @@ def retrieve():
     global balance
     label5.config(text=balance)
     doc.close()
+    entry1.config(state=DISABLED)
 
 #def insert():
     #label3.insert(name)
@@ -53,6 +48,7 @@ def withdraw_submit():
         doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
         doc.close()
         entry2.delete(0,END)
+        tkMessageBox.showinfo("Withdraw", "Transaction Successful")
     else:
         tkMessageBox.showwarning("Error", "Insufficient Funds") 
         entry2.delete(0,END)       
@@ -72,6 +68,7 @@ def deposit_submit():
     doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
     doc.close()
     entry3.delete(0,END)
+    tkMessageBox.showinfo("Deposit", "Transaction Successful")
     
 def transfer_submit():
     entrytxt4 = entry4.get()
@@ -100,10 +97,25 @@ def transfer_submit():
     doc = open(entrytxt4, "w")
     doc.write (account_number2 + "\n" + name2 + "\n" + str(new_balance2)) 
     doc.close()
+    entry4.delete(0,END)
+    entry5.delete(0,END)
+    tkMessageBox.showinfo("Transfer", "Transaction Successful")
     print account_number2
     print name2
     print new_balance2
     
+def logout():
+    entry1.config(state=NORMAL)
+    label3.config(text= "")
+    entry1.delete(0,END)
+    label5.config(text= "")
+    entry2.delete(0,END)
+    entry3.delete(0,END)
+    entry4.delete(0,END)
+    entry5.delete(0,END)
+    
+def help():
+    tkMessageBox.showinfo("Help", "Welcome to Fab Things Banking Company!  To begin, please enter your account number and click submit to log into your account. \n     -To withdraw, enter the amount you wish to extract and press the arrow key next to the box. \n     -To deposit, enter the amount you wish to add and press the arrow key next to the box. \n     -To transfer money to another account, enter the account number recieving the transfer, and the amount you wish to send.")
     
   
 root = Tk() #gives us a blank canvas object to work with
@@ -113,15 +125,6 @@ root.title("Fab Things Banking")
 entry1 = Entry(root)
 entry1.grid(row=0, column=1)
 
-
-
-#image = Image.open("morning.jpg")
-#image = image.resize((150,120))
-#photo = ImageTk.PhotoImage(image)
-
-#label2 = Label(image=photo)
-#label2.image = photo # keep a reference!
-#label2.grid(row=0, column=0, sticky=EW)
 
 label1 = Label(root, text="Account number:")
 label1.grid(row=0, column=0)
@@ -174,8 +177,6 @@ entry4 = Entry(root)
 entry4.grid(row=6, column=1, sticky=W)
 entry4.bind("<Return>", process)
 
-button4 = Button(root, text=">", command=withdraw_submit)
-button4.grid(row=6, column=2, sticky=W)
 
 label10 = Label(root, text="     Amount: $")
 label10.grid(row=7, column=0, sticky=W)
@@ -189,9 +190,9 @@ button5.grid(row=7, column=2, sticky=W)
 
 menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label="Help", command=openfileR)
+filemenu.add_command(label="Help", command=help)
 filemenu.add_separator()
-filemenu.add_command(label="Logout", command=openfileW)
+filemenu.add_command(label="Logout", command=logout)
 
 menubar.add_cascade(label="Options", menu=filemenu)
 
