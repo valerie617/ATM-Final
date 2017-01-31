@@ -7,6 +7,11 @@ from math import *
 
 def retrieve():
     entrytxt = entry1.get()
+    try:
+        int(entrytxt)
+    except:
+        tkMessageBox.showwarning("Error", "Invalid input") 
+        entry1.delete(0,END)
     entrytxt = entrytxt + ".txt"
     doc = open(entrytxt, "r")
     account_number = doc.readline()
@@ -24,6 +29,11 @@ def retrieve():
 
 def withdraw_submit():
     entrytxt2 = entry2.get()
+    try:
+        float(entrytxt2)
+    except:
+         tkMessageBox.showwarning("Error", "Invalid input") 
+         entry2.delete(0,END)       
     if float(balance) >= float(entrytxt2):
         new_balance = float(balance) - float(entrytxt2)
         balance = new_balance
@@ -42,6 +52,11 @@ def withdraw_submit():
     
 def deposit_submit():
     entrytxt3 = entry3.get()
+    try:
+        float(entrytxt3)
+    except:
+         tkMessageBox.showwarning("Error", "Invalid input") 
+         entry3.delete(0,END)       
     new_balance = float(balance) + float(entrytxt3)
     balance = new_balance
     global balance
@@ -65,6 +80,11 @@ def transfer_submit():
     balance2 = doc2.readline()
     doc2.close()
     entrytxt5 = entry5.get()
+    try:
+        float(entrytxt5)
+    except:
+         tkMessageBox.showwarning("Error", "Invalid input") 
+         entry5.delete(0,END)       
     new_balance = float(balance) - float(entrytxt5)
     new_balance2 = float(balance2) + float(entrytxt5)
     balance = new_balance
