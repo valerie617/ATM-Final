@@ -4,6 +4,9 @@ import tkMessageBox
 from PIL import Image, ImageTk
 from threading import *
 from math import *
+import os
+import os.path
+
 
 def retrieve():
     entrytxt = entry1.get()
@@ -13,19 +16,24 @@ def retrieve():
         tkMessageBox.showwarning("Error", "Invalid input") 
         entry1.delete(0,END)
     entrytxt = entrytxt + ".txt"
-    doc = open(entrytxt, "r")
-    account_number = doc.readline()
-    account_number = account_number[0:-1]
-    global account_number
-    name = doc.readline()
-    name = name[0:-1]
-    global name
-    label3.config(text=name)
-    balance = doc.readline()
-    global balance
-    label5.config(text=balance)
-    doc.close()
-    entry1.config(state=DISABLED)
+    if os.path.isfile(entrytxt) and os.access(entrytxt, os.R_OK):
+        doc = open(entrytxt, "r")
+        account_number = doc.readline()
+        account_number = account_number[0:-1]
+        global account_number
+        name = doc.readline()
+        name = name[0:-1]
+        global name
+        label3.config(text=name)
+        balance = doc.readline()
+        global balance
+        label5.config(text=balance)
+        doc.close()
+        entry1.config(state=DISABLED)
+    else:
+       tkMessageBox.showwarning("Error", "Account does not exist") 
+       entry1.delete(0,END)       
+
 
 def withdraw_submit():
     entrytxt2 = entry2.get()
@@ -72,37 +80,43 @@ def deposit_submit():
 def transfer_submit():
     entrytxt4 = entry4.get()
     entrytxt4 = entrytxt4 + ".txt"
-    doc2 = open(entrytxt4, "r")
-    account_number2 = doc2.readline()
-    account_number2 = account_number2[0:-1]
-    name2 = doc2.readline()
-    name2 = name2[0:-1]
-    balance2 = doc2.readline()
-    doc2.close()
-    entrytxt5 = entry5.get()
-    try:
-        float(entrytxt5)
-    except:
-         tkMessageBox.showwarning("Error", "Invalid input") 
-         entry5.delete(0,END)       
-    new_balance = float(balance) - float(entrytxt5)
-    new_balance2 = float(balance2) + float(entrytxt5)
-    balance = new_balance
-    global balance
-    label5.config(text=balance)
-    entrytxt = entry1.get()
-    entrytxt = entrytxt + ".txt"
-    doc = open(entrytxt, "w")
-    doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
-    doc.close()
-    entrytxt4 = entry4.get()
-    entrytxt4 = entrytxt4 + ".txt"
-    doc = open(entrytxt4, "w")
-    doc.write (account_number2 + "\n" + name2 + "\n" + str(new_balance2)) 
-    doc.close()
-    entry4.delete(0,END)
-    entry5.delete(0,END)
-    tkMessageBox.showinfo("Transfer", "Transaction Successful")
+    if os.path.isfile(entrytxt4) and os.access(entrytxt4, os.R_OK):
+        doc2 = open(entrytxt4, "r")
+        account_number2 = doc2.readline()
+        account_number2 = account_number2[0:-1]
+        name2 = doc2.readline()
+        name2 = name2[0:-1]
+        balance2 = doc2.readline()
+        doc2.close()
+        entrytxt5 = entry5.get()
+        try:
+            float(entrytxt5)
+        except:
+            tkMessageBox.showwarning("Error", "Invalid input") 
+            entry5.delete(0,END)       
+        new_balance = float(balance) - float(entrytxt5)
+        new_balance2 = float(balance2) + float(entrytxt5)
+        balance = new_balance
+        global balance
+        label5.config(text=balance)
+        entrytxt = entry1.get()
+        entrytxt = entrytxt + ".txt"
+        doc = open(entrytxt, "w")
+        doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
+        doc.close()
+        entrytxt4 = entry4.get()  
+        entrytxt4 = entrytxt4 + ".txt"
+        doc = open(entrytxt4, "w")
+        doc.write (account_number2 + "\n" + name2 + "\n" + str(new_balance2)) 
+        doc.close()
+        entry4.delete(0,END)
+        entry5.delete(0,END)
+        tkMessageBox.showinfo("Transfer", "Transaction Successful")
+    else:
+        tkMessageBox.showwarning("Error", "Account does not exist") 
+        entry4.delete(0,END)  
+        entry5.delete(0,END)
+   
    
 def logout():
     entry1.config(state=NORMAL)
