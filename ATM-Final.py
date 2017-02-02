@@ -26,6 +26,7 @@ def retrieve():
         global name
         label3.config(text=name)
         balance = doc.readline()
+        balance = round(float(balance), 2)
         global balance
         label5.config(text=balance)
         doc.close()
@@ -38,22 +39,28 @@ def retrieve():
 def withdraw_submit():
     entrytxt2 = entry2.get()
     try:
-        float(entrytxt2)
+        entrytxt2_number = float(entrytxt2)
     except:
          tkMessageBox.showwarning("Error", "Invalid input") 
          entry2.delete(0,END)       
     if float(balance) >= float(entrytxt2):
-        new_balance = float(balance) - float(entrytxt2)
-        balance = new_balance
-        global balance
-        label5.config(text=balance)
-        entrytxt = entry1.get()
-        entrytxt = entrytxt + ".txt"
-        doc = open(entrytxt, "w")
-        doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
-        doc.close()
-        entry2.delete(0,END)
-        tkMessageBox.showinfo("Withdraw", "Transaction Successful")
+        y = round(entrytxt2_number, 2)
+        if entrytxt2_number - y != 0:
+            tkMessageBox.showwarning("Error", "Invalid input") 
+            entry2.delete(0,END)
+        else:
+            new_balance = float(balance) - float(entrytxt2)
+            balance = new_balance
+            balance = round(float(balance), 2)
+            global balance
+            label5.config(text=balance)
+            entrytxt = entry1.get()
+            entrytxt = entrytxt + ".txt"
+            doc = open(entrytxt, "w")
+            doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
+            doc.close()
+            entry2.delete(0,END)
+            tkMessageBox.showinfo("Withdraw", "Transaction Successful")
     else:
         tkMessageBox.showwarning("Error", "Insufficient Funds") 
         entry2.delete(0,END)       
@@ -61,21 +68,28 @@ def withdraw_submit():
 def deposit_submit():
     entrytxt3 = entry3.get()
     try:
-        float(entrytxt3)
+        entrytxt3_number = float(entrytxt3)
+        y = round(entrytxt3_number, 2)
+        if entrytxt3_number - y != 0:
+            tkMessageBox.showwarning("Error", "Invalid input") 
+            entry3.delete(0,END)
+        else:
+            new_balance = float(balance) + float(entrytxt3)
+            balance = new_balance
+            balance = round(float(balance), 2)
+            global balance
+            label5.config(text=balance)
+            entrytxt = entry1.get()
+            entrytxt = entrytxt + ".txt"
+            doc = open(entrytxt, "w")
+            doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
+            doc.close()
+            entry3.delete(0,END)
+            tkMessageBox.showinfo("Deposit", "Transaction Successful")
     except:
          tkMessageBox.showwarning("Error", "Invalid input") 
-         entry3.delete(0,END)       
-    new_balance = float(balance) + float(entrytxt3)
-    balance = new_balance
-    global balance
-    label5.config(text=balance)
-    entrytxt = entry1.get()
-    entrytxt = entrytxt + ".txt"
-    doc = open(entrytxt, "w")
-    doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
-    doc.close()
-    entry3.delete(0,END)
-    tkMessageBox.showinfo("Deposit", "Transaction Successful")
+         entry3.delete(0,END)     
+
     
 def transfer_submit():
     entrytxt4 = entry4.get()
@@ -90,32 +104,41 @@ def transfer_submit():
         doc2.close()
         entrytxt5 = entry5.get()
         try:
-            float(entrytxt5)
+            entrytxt5_number = float(entrytxt5)
+            y = round(entrytxt5_number, 2)
+            if entrytxt5_number - y != 0:
+                tkMessageBox.showwarning("Error", "Invalid input") 
+                entry4.delete(0,END)
+                entry5.delete(0,END)
+            else:
+                new_balance = float(balance) - float(entrytxt5)
+                new_balance2 = float(balance2) + float(entrytxt5)
+                new_balance2 = round(float(new_balance2), 2)
+                balance = new_balance
+                balance = round(float(balance), 2)
+                global balance
+                label5.config(text=balance)
+                entrytxt = entry1.get()
+                entrytxt = entrytxt + ".txt"
+                doc = open(entrytxt, "w")
+                doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
+                doc.close()
+                entrytxt4 = entry4.get()  
+                entrytxt4 = entrytxt4 + ".txt"
+                doc = open(entrytxt4, "w")
+                doc.write (account_number2 + "\n" + name2 + "\n" + str(new_balance2)) 
+                doc.close()
+                entry4.delete(0,END)
+                entry5.delete(0,END)
+                tkMessageBox.showinfo("Transfer", "Transaction Successful")
         except:
             tkMessageBox.showwarning("Error", "Invalid input") 
-            entry5.delete(0,END)       
-        new_balance = float(balance) - float(entrytxt5)
-        new_balance2 = float(balance2) + float(entrytxt5)
-        balance = new_balance
-        global balance
-        label5.config(text=balance)
-        entrytxt = entry1.get()
-        entrytxt = entrytxt + ".txt"
-        doc = open(entrytxt, "w")
-        doc.write (account_number + "\n" + name + "\n" + str(new_balance)) 
-        doc.close()
-        entrytxt4 = entry4.get()  
-        entrytxt4 = entrytxt4 + ".txt"
-        doc = open(entrytxt4, "w")
-        doc.write (account_number2 + "\n" + name2 + "\n" + str(new_balance2)) 
-        doc.close()
-        entry4.delete(0,END)
-        entry5.delete(0,END)
-        tkMessageBox.showinfo("Transfer", "Transaction Successful")
+            entry5.delete(0,END)  
     else:
         tkMessageBox.showwarning("Error", "Account does not exist") 
         entry4.delete(0,END)  
-        entry5.delete(0,END)
+        entry5.delete(0,END)     
+
    
    
 def logout():
